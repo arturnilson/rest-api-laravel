@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/ok', function () {
-    return ['status' => true];
+Route::namespace('API')->name('api.')->group(function () {
+    // Outra forma de fazer
+    // Route::get('/products', 'ProductController@index')->name('products');
+
+    Route::prefix('products')->group(function () {
+        Route::get('/', 'ProductController@index')->name('index_products');
+        Route::get('/{id}', 'ProductController@show')->name('single_products');
+    });
+
+    Route::post('/', 'ProductController@store')->name('store_products');
 });
+
+//TODO continuar video em 46:12
